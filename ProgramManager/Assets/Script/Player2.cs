@@ -8,10 +8,6 @@ public class Player2 : MonoBehaviour
     void Start()
     {
         MainManager._instance.Start();
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SceneManager.LoadScene("ProgramManager");
-           
-        }
+      
     }
 }
