@@ -10,6 +10,7 @@ public class MainManager : MonoBehaviour
     public GameObject bottone;
     public GameObject video;
     public static MainManager _instance;
+
     //public static MainManager Instance { get; set; } 1
 
 

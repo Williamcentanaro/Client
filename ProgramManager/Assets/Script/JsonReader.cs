@@ -8,7 +8,6 @@ using UnityEngine.Video;
 public class JsonReader : MonoBehaviour
 {
     public TextAsset textJSON;
-
     [System.Serializable]
     public class Player
     {
@@ -26,10 +25,8 @@ public class JsonReader : MonoBehaviour
     public PlayerList myPlayerList = new PlayerList();
     public void Start()
     {
-        myPlayerList = JsonUtility.FromJson<PlayerList>(textJSON.text);
-        Player player = new Player();
-        string json =JsonUtility.ToJson(player);
-        player = JsonUtility.FromJson<Player>(json);
-        player = JsonUtility.FromJson<Player>(json);
+        string json = JsonUtility.ToJson(myPlayerList);
+        //myPlayerList = JsonUtility.FromJson<PlayerList>(json);
+        Debug.Log(json);
     }
 }
