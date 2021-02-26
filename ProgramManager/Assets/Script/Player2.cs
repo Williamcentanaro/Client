@@ -7,7 +7,6 @@ public class Player2 : MonoBehaviour
 {
     void Start()
     {
-        MainManager._instance.Start();
       
     }
 }

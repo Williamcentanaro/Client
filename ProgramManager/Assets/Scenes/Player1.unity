@@ -153,7 +153,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textJSON: {fileID: 4900000, guid: 547a84ca3f2a6e944b7d8960b6b628bf, type: 3}
   myPlayerList:
-    player: []
+    player:
+    - widget: 0
+      x: 0
+      y: 0
+      h: 0
+      w: 0
 --- !u!1 &1106679320
 GameObject:
   m_ObjectHideFlags: 0

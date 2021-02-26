@@ -773,6 +773,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061a28d8da6cf584da0cbea163717099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textJSON: {fileID: 4900000, guid: 547a84ca3f2a6e944b7d8960b6b628bf, type: 3}
+  myPlayerList:
+    player:
+    - widget: 452
+      x: 1
+      y: 1
+      h: 2
+      w: 2
+    - widget: 0
+      x: 0
+      y: 0
+      h: 0
+      w: 0
 --- !u!114 &2417515012807281019
 MonoBehaviour:
   m_ObjectHideFlags: 0
