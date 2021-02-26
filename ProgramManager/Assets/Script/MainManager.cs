@@ -10,7 +10,7 @@ public class MainManager : MonoBehaviour
     public GameObject bottone;
     public GameObject video;
     public static MainManager _instance;
-    //public static MainManager Instance { get; set; }
+    //public static MainManager Instance { get; set; } 1
 
 
     void Awake()
@@ -50,7 +50,7 @@ public class MainManager : MonoBehaviour
 
         // Imposta la riproduzione del video. L'URL supporta percorsi locali assoluti o relativi.
         // Qui, usando assoluto.
-        videoPlayer.url = "C:/Users/Alessandro/Desktop/Calcolatrice/ProgramManager/Assets/Video/LA BELLEZZA DELLA NATURA.mp4";
+        videoPlayer.url = "C:/Users/Alessandro/Documents/GitHub/PRJECT/ProgramManager/Assets/Video/LA BELLEZZA DELLA NATURA.mp4";
 
         // Salta i primi 100 fotogrammi.
         videoPlayer.frame = 100;
