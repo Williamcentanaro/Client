@@ -5,11 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MainManager : MonoBehaviour
 {
-    //#region Soccket variabili
-    //Socket connection;
-    
-    //int array_size =0;
-    //#endregion
     public GameObject video;
     public static MainManager _instance;
     void Awake()
@@ -27,37 +22,20 @@ public class MainManager : MonoBehaviour
             return;
         }
     }
-    private void Start()
+        public void Start()
     {
         Play(video);
-
-        //Socket listen = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        
-        //IPEndPoint connecting = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 52844);
-
-        //listen.Bind(connecting);
-        //listen.Listen(10);
-        //connection = listen.Accept();
-        //String data = "";
-
-
-        //byte[] ricevi_info = new byte[100];
-        //array_size = connection.Receive(ricevi_info, 0, ricevi_info.Length, 0);
-        //Array.Resize(ref ricevi_info, array_size);
-        //data = Encoding.Default.GetString(ricevi_info);
-        //Debug.Log("La informazione ricevuta è : {0}");
     }
     private void Update()
     {
-        if (Input.GetKeyDown("space"))
-        {
-            SceneManager.LoadScene("Player1");
+        if (Input.GetKeyDown("space")) { 
+            SceneManager.LoadScene("Player1"); 
         }
     }
     public void Play(GameObject  video)
     {
         // Collegherà un VideoPlayer alla fotocamera principale.
-        video = GameObject.Find("Main Camera");
+         video = GameObject.Find("Main Camera");
         // VideoPlayer prende automaticamente di mira il backplane della telecamera quando viene aggiunto
         // in un oggetto fotocamera, non è necessario modificare videoPlayer.targetCamera.
         var videoPlayer = video.AddComponent<VideoPlayer>();
@@ -92,12 +70,5 @@ public class MainManager : MonoBehaviour
     {
        SceneManager.LoadScene("Player1");
     }
-    public void SetVideo(GameObject v)
-    {
-        v = video;
-    }
-    public GameObject GetVideo(GameObject video)
-    {
-        return video;
-    }
+   
 }
