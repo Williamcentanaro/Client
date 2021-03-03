@@ -252,7 +252,7 @@ PrefabInstance:
     - target: {fileID: 961878268642035789, guid: 2ff165230fa7747448e71d2c08757078,
         type: 3}
       propertyPath: m_Name
-      value: 'Player '
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ff165230fa7747448e71d2c08757078, type: 3}
@@ -321,7 +321,7 @@ PrefabInstance:
     - target: {fileID: 961878268642035789, guid: 2ff165230fa7747448e71d2c08757078,
         type: 3}
       propertyPath: m_Name
-      value: 'Player '
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ff165230fa7747448e71d2c08757078, type: 3}
@@ -408,6 +408,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1872360755 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 961878268642035789, guid: 2ff165230fa7747448e71d2c08757078,
+    type: 3}
+  m_PrefabInstance: {fileID: 961878267947178311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1872360756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872360755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 061a28d8da6cf584da0cbea163717099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileJSON: {fileID: 4900000, guid: 547a84ca3f2a6e944b7d8960b6b628bf, type: 3}
+  myPlayerList:
+    player:
+    - widget: a
+      x: 23
+      y: 32
+      h: 4
+      w: 2
+--- !u!114 &1872360758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872360755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce74d337794e9a40856846987e96cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  video: {fileID: 0}
 --- !u!1001 &2026919177
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -538,11 +577,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 961878268642035787, guid: 2ff165230fa7747448e71d2c08757078,
-        type: 3}
-      propertyPath: myPlayerList.player.Array.size
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 961878268642035789, guid: 2ff165230fa7747448e71d2c08757078,
         type: 3}

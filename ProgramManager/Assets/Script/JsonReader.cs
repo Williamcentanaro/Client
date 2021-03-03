@@ -1,11 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Video;
-
-
-
-
+﻿using UnityEngine;
 public class JsonReader : MonoBehaviour
 {
     public TextAsset fileJSON;
@@ -28,4 +21,4 @@ public class JsonReader : MonoBehaviour
     {
         myPlayerList = JsonUtility.FromJson<PlayerList>(fileJSON.text);
     }
-}
+} 
