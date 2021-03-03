@@ -2,7 +2,6 @@
 using UnityEngine.Video;
 using System.Net.Sockets;
 using UnityEngine.SceneManagement;
-
 public class MainManager : MonoBehaviour
 {
     public GameObject video;
@@ -11,20 +10,20 @@ public class MainManager : MonoBehaviour
     {
         if (_instance == null) {
             _instance = this;
-            //non distruggere game object
-            DontDestroyOnLoad(gameObject);  
-            //video = GetComponent<GameObject>();
-            video = GetComponent<GameObject>();
+            DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            Destroy(this.gameObject);
+        else {
+            Destroy(gameObject);
             return;
         }
+            ////non distruggere game object
+            //DontDestroyOnLoad(gameObject);
+            ////video = GetComponent<GameObject>();
+            //video = GetComponent<GameObject>(); 
     }
         public void Start()
     {
-        Play(video);
+        Player(video);
     }
     private void Update()
     {
@@ -32,10 +31,12 @@ public class MainManager : MonoBehaviour
             SceneManager.LoadScene("Player1"); 
         }
     }
-    public void Play(GameObject  video)
+    public void Player(GameObject  video)
     {
+        //string myPlayerList = "{\"Screen\":\"widget\",\"x\",\"y\",\"h\",\"w\"}";
+        //(Resources.Load("fileJSON");
         // Collegherà un VideoPlayer alla fotocamera principale.
-         video = GameObject.Find("Main Camera");
+        video = GameObject.Find("Main Camera");
         // VideoPlayer prende automaticamente di mira il backplane della telecamera quando viene aggiunto
         // in un oggetto fotocamera, non è necessario modificare videoPlayer.targetCamera.
         var videoPlayer = video.AddComponent<VideoPlayer>();
@@ -52,7 +53,7 @@ public class MainManager : MonoBehaviour
         videoPlayer.url = "C:/Users/Alessandro/Documents/GitHub/PRJECT/ProgramManager/Assets/Video/LA BELLEZZA DELLA NATURA.mp4";
         // Salta i primi 100 fotogrammi.
         videoPlayer.frame = 100;
-        // Riavvia dall'inizio al termine.
+        // Riavvia dall'inizio al termine.   
         videoPlayer.isLooping = true;
         // Ogni volta che raggiungiamo la fine, rallentiamo la riproduzione di un fattore 10.
         videoPlayer.loopPointReached += EndReached;
@@ -66,9 +67,4 @@ public class MainManager : MonoBehaviour
     {
         vp.playbackSpeed = vp.playbackSpeed / 10.0f;
     }
-    public void CambioScena()
-    {
-       SceneManager.LoadScene("Player1");
-    }
-   
 }
