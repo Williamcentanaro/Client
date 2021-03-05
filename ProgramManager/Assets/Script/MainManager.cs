@@ -9,6 +9,8 @@ public class MainManager : MonoBehaviour
 {
     public GameObject video;
     public static MainManager _instance;
+    string jsonString = "{ \"x\":1,\"w\":4,\"h\":5,\"y\":6,\"fullScreen\":true}";
+    OptionsPlayer options = new OptionsPlayer.CreateFromJSON(jsonString);
     void Awake()
     {
         if (_instance == null) {
@@ -24,8 +26,13 @@ public class MainManager : MonoBehaviour
     {
         //Debug.Log(StartCoroutine(GetData_Courotine()));
         //GameObject.Find("GetButton").GetComponent<Button>().onClick.AddListener(GetData);
-    }
-    private void Update()
+
+        //read JSON file;
+        
+        Debug.Log("options", options.fullScreen);
+
+}
+private void Update()
     {
         if (Input.GetKeyDown("space")) { 
             SceneManager.LoadScene("Player1");
