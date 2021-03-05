@@ -306,7 +306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5757e9c135cd8044aacf32932ffa96bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  video: {fileID: 0}
 --- !u!114 &1710355867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,7 +320,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileJSON: {fileID: 4900000, guid: 547a84ca3f2a6e944b7d8960b6b628bf, type: 3}
   myPlayerList:
-    player: []
+    player:
+    - widget: www
+      x: 2
+      y: 2
+      h: 2
+      w: 0
 --- !u!1 &1732305327
 GameObject:
   m_ObjectHideFlags: 0
