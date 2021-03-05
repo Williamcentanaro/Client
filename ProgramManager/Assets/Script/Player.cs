@@ -14,10 +14,7 @@ namespace Assets.Script
         }
 
         // Update is called once per frame
-        void Update()
-        {
-
-        }
+       
         public void Players()
         {
             //string myPlayerList = "{\"Screen\":\"widget\",\"x\",\"y\",\"h\",\"w\"}";
