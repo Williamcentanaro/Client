@@ -4,13 +4,13 @@ using UnityEngine.Networking;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
     public GameObject video;
     public static MainManager _instance;
-    string jsonString = "{ \"x\":1,\"w\":4,\"h\":5,\"y\":6,\"fullScreen\":true}";
-    OptionsPlayer options = new OptionsPlayer.CreateFromJSON(jsonString);
+
     void Awake()
     {
         if (_instance == null) {
@@ -28,10 +28,13 @@ public class MainManager : MonoBehaviour
         //GameObject.Find("GetButton").GetComponent<Button>().onClick.AddListener(GetData);
 
         //read JSON file;
-        
-        Debug.Log("options", options.fullScreen);
 
-}
+        StreamReader sr = new StreamReader("config.json");
+        string jsonString = sr.ReadToEnd();
+        OptionsPlayer options = JsonUtility.FromJson<OptionsPlayer>(jsonString);
+        Debug.LogFormat("x:{0} w:{1} h:{2} y:{3} fullScreen:{4}", options.x, options.w, options.h, options.y, options.fullScreen);
+        
+    }
 private void Update()
     {
         if (Input.GetKeyDown("space")) { 
