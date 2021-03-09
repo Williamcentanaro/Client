@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Video;
 
 namespace Assets.Script
@@ -14,7 +13,7 @@ namespace Assets.Script
         }
 
         // Update is called once per frame
-       
+
         public void Players()
         {
             //string myPlayerList = "{\"Screen\":\"widget\",\"x\",\"y\",\"h\",\"w\"}";

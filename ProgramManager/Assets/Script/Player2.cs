@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Video;
 
 public class Player2 : MonoBehaviour
 {
@@ -8,5 +7,5 @@ public class Player2 : MonoBehaviour
     {
         if (Input.GetKeyDown("space")) { SceneManager.LoadScene("ProgramManager"); }
     }
-   
+
 }
