@@ -3,13 +3,16 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static JsonReader;
+using System.Collections;
+using System.IO;
+
 
 public class MainManager : MonoBehaviour
 {
     string path;
     public GameObject video;
     public static MainManager _instance;
+
     void Awake()
     {
         if (_instance == null)
@@ -25,16 +28,21 @@ public class MainManager : MonoBehaviour
     }
     public void Start()
     {
+        //read JSON file;
         path = Application.streamingAssetsPath + "/fileJSON.json";
         StreamReader file = File.OpenText(path);
         JsonSerializer serializer = new JsonSerializer();
-        Root widget = (Root)serializer.Deserialize(file, typeof(Root));
+        JsonReader.Root widget = (JsonReader.Root)serializer.Deserialize(file, typeof(JsonReader.Root));
         Debug.Log(widget.Screen);
         Console.ReadKey();
         //Debug.Log(StartCoroutine(GetData_Courotine()));
         //GameObject.Find("GetButton").GetComponent<Button>().onClick.AddListener(GetData);
+
+       
+
+        
     }
-    private void Update()
+private void Update()
     {
         if (Input.GetKeyDown("space"))
         {
