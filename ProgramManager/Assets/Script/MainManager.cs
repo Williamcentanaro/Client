@@ -3,16 +3,15 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
-using System.IO;
-
-
+using System.Net.Sockets;
+using System.Net;
+using System.Text;
 public class MainManager : MonoBehaviour
 {
+    #region JsonReader
     string path;
-    public GameObject video;
+   #endregion
     public static MainManager _instance;
-
     void Awake()
     {
         if (_instance == null)
@@ -28,32 +27,21 @@ public class MainManager : MonoBehaviour
     }
     public void Start()
     {
+        #region read JSON file
         //read JSON file;
         path = Application.streamingAssetsPath + "/fileJSON.json";
         StreamReader file = File.OpenText(path);
         JsonSerializer serializer = new JsonSerializer();
         JsonReader.Root widget = (JsonReader.Root)serializer.Deserialize(file, typeof(JsonReader.Root));
-        Debug.Log(widget.Screen);
+        Debug.Log(widget.Screen[0].widget);
         Console.ReadKey();
-        //Debug.Log(StartCoroutine(GetData_Courotine()));
-        //GameObject.Find("GetButton").GetComponent<Button>().onClick.AddListener(GetData);
-
-       
-
-        
+        #endregion
     }
-private void Update()
+    private void Update()
     {
         if (Input.GetKeyDown("space"))
         {
             SceneManager.LoadScene("Player1");
         }
-        else if (Input.GetKeyDown("a"))
-        {
-        }
-        else if (Input.GetKeyDown("b"))
-        {
-        }
     }
-
 }
