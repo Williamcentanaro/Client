@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class JsonReader : MonoBehaviour
+public class JsonReader
 {
     public string widget { get; set; }
     public int x { get; set; }

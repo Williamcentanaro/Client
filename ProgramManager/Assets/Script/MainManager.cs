@@ -1,47 +1,31 @@
-﻿using Newtonsoft.Json;
+﻿using UnityEngine;
+using System.Collections.Generic;
 using System;
-using System.IO;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Net.Sockets;
-using System.Net;
-using System.Text;
-public class MainManager : MonoBehaviour
+
+public abstract class MainManager<T> : MonoBehaviour
 {
-    #region JsonReader
-    string path;
-   #endregion
-    public static MainManager _instance;
-    void Awake()
+
+    private static Dictionary<Type, object> _singletons
+        = new Dictionary<Type, object>();
+
+    public static T Instance
     {
-        if (_instance == null)
+        get
         {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-            return;
+            return (T)_singletons[typeof(T)];
         }
     }
-    public void Start()
+
+    void OnEnable()
     {
-        #region read JSON file
-        //read JSON file;
-        path = Application.streamingAssetsPath + "/fileJSON.json";
-        StreamReader file = File.OpenText(path);
-        JsonSerializer serializer = new JsonSerializer();
-        JsonReader.Root widget = (JsonReader.Root)serializer.Deserialize(file, typeof(JsonReader.Root));
-        Debug.Log(widget.Screen[0].widget);
-        Console.ReadKey();
-        #endregion
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown("space"))
+        if (_singletons.ContainsKey(GetType()))
         {
-            SceneManager.LoadScene("Player1");
+            Destroy(this);
+        }
+        else
+        {
+            _singletons.Add(GetType(), this);
+            DontDestroyOnLoad(this);
         }
     }
 }
