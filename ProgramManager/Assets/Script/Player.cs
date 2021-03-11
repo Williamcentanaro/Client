@@ -77,7 +77,6 @@ namespace Assets.Script
             Debug.Log("Status Code: " + request.responseCode);
         }
 
-
         void EndReached(UnityEngine.Video.VideoPlayer vp)
         {
             vp.playbackSpeed = vp.playbackSpeed / 10.0f;
