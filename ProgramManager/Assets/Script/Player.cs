@@ -2,8 +2,8 @@
 using System.Collections;
 using System.IO;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.Video;
+using UnityEngine.Networking;
 
 namespace Assets.Script
 {
@@ -23,7 +23,7 @@ namespace Assets.Script
             JsonReader screen = readJSON();
             JsonMessage message = new JsonMessage(screen, idMacchina);
             /* faccio la POST */
-            StartCoroutine(Post("localhost", message));
+            StartCoroutine(Post("localhost", message)); //Inserire IP SERVER al posto di localhost
 
 
 
@@ -80,19 +80,6 @@ namespace Assets.Script
         void EndReached(UnityEngine.Video.VideoPlayer vp)
         {
             vp.playbackSpeed = vp.playbackSpeed / 10.0f;
-        }
-    }
-
-    internal class UnityWebRequest
-    {
-        internal UploadHandler uploadHandler;
-        private string url;
-        private string v;
-
-        public UnityWebRequest(string url, string v)
-        {
-            this.url = url;
-            this.v = v;
         }
     }
 }
