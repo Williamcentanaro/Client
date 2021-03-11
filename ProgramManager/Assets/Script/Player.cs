@@ -1,11 +1,13 @@
-﻿using UnityEngine;
-using UnityEngine.Video;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.IO;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.Video;
 
 namespace Assets.Script
 {
+    // 11/03/2021 23:43
     public class Player : MainManager<Player>
     {
         GameObject video;
@@ -17,7 +19,14 @@ namespace Assets.Script
         // Update is called once per frame
         public void Players()
         {
-            JsonReader.Root widgetList = readJSON();
+            string idMacchina = "192.168.207.161";
+            JsonReader screen = readJSON();
+            JsonMessage message = new JsonMessage(screen, idMacchina);
+            /* faccio la POST */
+            StartCoroutine(Post("localhost", message));
+
+
+
             // Collegherà un VideoPlayer alla fotocamera principale.
             video = GameObject.Find("Main Camera");
             // VideoPlayer prende automaticamente di mira il backplane della telecamera quando viene aggiunto
@@ -27,6 +36,7 @@ namespace Assets.Script
             // avviare automaticamente 
             videoPlayer.playOnAwake = false;
             //piano lontano.
+
             // Miriamo invece all'aereo vicino.
             videoPlayer.renderMode = UnityEngine.Video.VideoRenderMode.CameraNearPlane;
             // Questo renderà la nostra scena visibile attraverso il video riprodotto.
@@ -44,20 +54,46 @@ namespace Assets.Script
             videoPlayer.Play();
         }
 
-        JsonReader.Root readJSON()
+        JsonReader readJSON()
         {
             string path = Application.streamingAssetsPath + "/fileJSON.json";
-            StreamReader file = File.OpenText(path);
-            JsonSerializer serializer = new JsonSerializer();
-            JsonReader.Root widgetList = (JsonReader.Root)serializer.Deserialize(file, typeof(JsonReader.Root));
-            Debug.Log(widgetList.Screen[0].widget);
-            return widgetList;
+            JsonReader screen = JsonConvert.DeserializeObject<JsonReader>(File.ReadAllText(path));
+            return screen;
+        }
+
+        IEnumerator Post(string url, JsonMessage message)
+        {
+            string output = JsonConvert.SerializeObject(message);
+            Debug.Log("Url " + url);
+            Debug.Log("JSON: " + output);
+            Debug.Log("FINE POST");
+        
+            var request = new UnityWebRequest(url, "POST");
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(output);
+            request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+            yield return request.SendWebRequest();
+            Debug.Log("Status Code: " + request.responseCode);
         }
 
 
         void EndReached(UnityEngine.Video.VideoPlayer vp)
         {
             vp.playbackSpeed = vp.playbackSpeed / 10.0f;
+        }
+    }
+
+    internal class UnityWebRequest
+    {
+        internal UploadHandler uploadHandler;
+        private string url;
+        private string v;
+
+        public UnityWebRequest(string url, string v)
+        {
+            this.url = url;
+            this.v = v;
         }
     }
 }

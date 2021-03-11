@@ -1,17 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
-[System.Serializable]
+
+//Classe Screen con il widget e il file
 public class JsonReader
 {
-    public string widget { get; set; }
-    public int x { get; set; }
-    public int y { get; set; }
-    public int w { get; set; }
-    public int h { get; set; }
-    [System.Serializable]
-    public class Root
-    {
-        public List<JsonReader> Screen { get; set; }
-    }
-}
+		public Screen screen { get; set; }
+		public string idFile { get; set; }
+	}
