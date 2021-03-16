@@ -4,28 +4,83 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.Networking;
-
+using NativeWebSocket;
 namespace Assets.Script
 {
     // 11/03/2021 23:43
     public class Player : MainManager<Player>
     {
         GameObject video;
+        string idMacchina = "192.168.207.161";
+        private bool intentionalClose = false;
+        WebSocket ws;
         // Use this for initialization
+        private void SetupWebsocketCallbacks()
+        {
+            ws.OnOpen += () =>
+            {
+                JsonReader screen = readJSON();
+                JsonMessage message = new JsonMessage(screen, idMacchina);
+                /* faccio la POST */
+                StartCoroutine(Post("localhost", message));//Inserire IP SERVER al posto di localhost**/
+                SendWebSocketMessage(JsonConvert.SerializeObject(message));
+            };
+            ws.OnError += (e) =>
+            {
+                Debug.Log("Error! " + e);
+            };
+            ws.OnClose += (e) =>
+            {
+                Debug.Log("Connection closed!");
+            };
+            ws.OnMessage += (bytes) =>
+            {
+                Debug.Log("OnMessage!");
+                string message = System.Text.Encoding.UTF8.GetString(bytes);
+                Debug.Log(message.ToString());
+
+               //ProcessReceivedMessage(message);
+            };
+        }
+        // Connects to the websocket
+        async public void FindMatch()
+        {
+            // waiting for messages
+            await ws.Connect();
+        }
+        public async void SendWebSocketMessage(string message)
+        {
+            if (ws.State == WebSocketState.Open)
+            {
+                // Sending plain text
+                await ws.SendText(message);
+            }
+        }
+        private async void OnApplicationQuit()
+        {
+            await ws.Close();
+        }
         void Start()
         {
-            Players();
+            Debug.Log("Websocket start");
+            intentionalClose = false;
+
+            ws= new WebSocket("ws://localhost:8080");
+            SetupWebsocketCallbacks();
+            FindMatch();
         }
+        void Update()
+        {
+       #if !UNITY_WEBGL || UNITY_EDITOR
+            ws.DispatchMessageQueue();
+       #endif
+        }
+
+        //public void init() { }
+
         // Update is called once per frame
         public void Players()
         {
-            string idMacchina = "192.168.207.161";
-            JsonReader screen = readJSON();
-            JsonMessage message = new JsonMessage(screen, idMacchina);
-            /* faccio la POST */
-            StartCoroutine(Post("localhost", message)); //Inserire IP SERVER al posto di localhost
-
-
 
             // Collegherà un VideoPlayer alla fotocamera principale.
             video = GameObject.Find("Main Camera");
@@ -53,8 +108,9 @@ namespace Assets.Script
             // Avvia la riproduzione.
             videoPlayer.Play();
         }
-
-        JsonReader readJSON()
+        
+    
+    JsonReader readJSON()
         {
             string path = Application.streamingAssetsPath + "/fileJSON.json";
             JsonReader screen = JsonConvert.DeserializeObject<JsonReader>(File.ReadAllText(path));
