@@ -12,7 +12,7 @@ namespace Assets.Script
     {
         GameObject video;
         string idMacchina = "192.168.207.161";
-        private bool intentionalClose = false;
+        //private bool intentionalClose;
         WebSocket ws;
         // Use this for initialization
         private void SetupWebsocketCallbacks()
@@ -21,7 +21,6 @@ namespace Assets.Script
             {
                 JsonReader screen = readJSON();
                 JsonMessage message = new JsonMessage(screen, idMacchina);
-                /* faccio la POST */
                 StartCoroutine(Post("localhost", message));//Inserire IP SERVER al posto di localhost**/
                 SendWebSocketMessage(JsonConvert.SerializeObject(message));
             };
@@ -38,8 +37,7 @@ namespace Assets.Script
                 Debug.Log("OnMessage!");
                 string message = System.Text.Encoding.UTF8.GetString(bytes);
                 Debug.Log(message.ToString());
-
-               //ProcessReceivedMessage(message);
+              
             };
         }
         // Connects to the websocket
@@ -63,9 +61,9 @@ namespace Assets.Script
         void Start()
         {
             Debug.Log("Websocket start");
-            intentionalClose = false;
-
+            //intentionalClose = false;
             ws= new WebSocket("ws://localhost:8080");
+            Players();
             SetupWebsocketCallbacks();
             FindMatch();
         }
@@ -75,13 +73,8 @@ namespace Assets.Script
             ws.DispatchMessageQueue();
        #endif
         }
-
-        //public void init() { }
-
-        // Update is called once per frame
         public void Players()
         {
-
             // Collegherà un VideoPlayer alla fotocamera principale.
             video = GameObject.Find("Main Camera");
             // VideoPlayer prende automaticamente di mira il backplane della telecamera quando viene aggiunto
@@ -91,16 +84,15 @@ namespace Assets.Script
             // avviare automaticamente 
             videoPlayer.playOnAwake = false;
             //piano lontano.
-
             // Miriamo invece all'aereo vicino.
             videoPlayer.renderMode = UnityEngine.Video.VideoRenderMode.CameraNearPlane;
             // Questo renderà la nostra scena visibile attraverso il video riprodotto.
             videoPlayer.targetCameraAlpha = 0.5F;
             //L'URL supporta percorsi locali assoluti o relativi.
             // Qui, usando assoluto.
-            //videoPlayer.url = "C:/Users/Alessandro/Documents/GitHub/PRJECT/ProgramManager/Assets/Video/LA BELLEZZA DELLA NATURA.mp4";
+            videoPlayer.url = "C:/Users/William/Documents/GitHub/Cliente/ProgramManager/Assets/Video/pippo.mp4";
             // Salta i primi 100 fotogrammi.
-            videoPlayer.frame = 100;
+            videoPlayer.frame = 0;
             // Riavvia dall'inizio al termine.   
             videoPlayer.isLooping = true;
             //  rallentiamo la riproduzione
@@ -108,8 +100,6 @@ namespace Assets.Script
             // Avvia la riproduzione.
             videoPlayer.Play();
         }
-        
-    
     JsonReader readJSON()
         {
             string path = Application.streamingAssetsPath + "/fileJSON.json";
