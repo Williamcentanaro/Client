@@ -5,6 +5,10 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.Networking;
 using NativeWebSocket;
+using System.Text;
+using UnityEditor.PackageManager.Requests;
+using System;
+
 namespace Assets.Script
 {
     // 11/03/2021 23:43
@@ -12,76 +16,6 @@ namespace Assets.Script
     {
         GameObject video;
         string idMacchina = "192.168.207.161";
-        #region Web Socket
-        //private bool intentionalClose = false;
-        ////WebSocket ws;
-        //// Use this for initialization
-        //private void SetupWebsocketCallbacks()
-        //{
-        //    ws.OnOpen += () =>
-        //    {
-
-        //    };
-        //    ws.OnError += (e) =>
-        //    {
-        //        Debug.Log("Error! " + e);
-        //    };
-        //    ws.OnClose += (e) =>
-        //    {
-        //        Debug.Log("Connection closed!");
-        //    };
-        //    ws.OnMessage += (bytes) =>
-        //    {
-        //        Debug.Log("OnMessage!");
-        //        string message = System.Text.Encoding.UTF8.GetString(bytes);
-        //        Debug.Log(message.ToString());
-
-        //        //ProcessReceivedMessage(message);
-        //    };
-        //}
-        //// Connects to the websocket
-        //async public void FindMatch()
-        //{
-        //    // waiting for messages
-        //    await ws.Connect();
-        //}
-
-        //public async void SendWebSocketMessage(string message)
-        //{
-        //    if (ws.State == WebSocketState.Open)
-        //    {
-        //        // Sending plain text
-        //        await ws.SendText(message);
-        //    }
-        //}
-        //private async void OnApplicationQuit()
-        //{
-        //    await ws.Close();
-        //}
-        //void Start()
-        //{
-        //    Debug.Log("Websocket start");
-        //    intentionalClose = false;
-
-        //    ws = new WebSocket("ws://localhost:8080");
-        //    SetupWebsocketCallbacks();
-        //    FindMatch();
-        //SendWebSocketMessage(JsonConvert.SerializeObject(message));
-        //}
-        //void Start()
-        //{
-        ////    Debug.Log("Websocket start");
-        ////    intentionalClose = false;
-        ////    ws = new WebSocket("ws://localhost:8080");
-        ////    SetupWebsocketCallbacks();
-        ////    FindMatch();
-        ////SendWebSocketMessage(JsonConvert.SerializeObject(message));
-        //}
-        #endregion
-
-        //public void init() { }
-
-        // Update is called once per frame
        void Start()
        {
             Players();
@@ -90,9 +24,19 @@ namespace Assets.Script
         {
             JsonReader screen = readJSON();
             JsonMessage message = new JsonMessage(screen, idMacchina);
-            JsonConvert.SerializeObject(message);
             /* faccio la POST */
-            StartCoroutine(Get("http://localhost:3000/url", message));//Inserire IP SERVER al posto di localhost**/
+            StartCoroutine(Post("http://localhost:3000/url", message, (UnityWebRequest req) =>
+            {
+                if ((req.result == UnityWebRequest.Result.ConnectionError) || (req.result == UnityWebRequest.Result.ProtocolError))
+                {
+                    Debug.Log($"{req.error}: {req.downloadHandler.text}");
+                }
+                else
+                {
+                    GetUrl getUrl = JsonUtility.FromJson<GetUrl>(req.downloadHandler.text);
+                    Debug.Log(getUrl.url);
+                }
+            })); //Inserire IP SERVER al posto di localhost
             // Collegherà un VideoPlayer alla fotocamera principale.
             video = GameObject.Find("Main Camera");
             // VideoPlayer prende automaticamente di mira il backplane della telecamera quando viene aggiunto
@@ -102,7 +46,6 @@ namespace Assets.Script
             // avviare automaticamente 
             videoPlayer.playOnAwake = false;
             //piano lontano.
-
             // Miriamo invece all'aereo vicino.
             videoPlayer.renderMode = UnityEngine.Video.VideoRenderMode.CameraNearPlane;
             // Questo renderà la nostra scena visibile attraverso il video riprodotto.
@@ -119,33 +62,26 @@ namespace Assets.Script
             // Avvia la riproduzione.
             videoPlayer.Play();
         }
-
-
         JsonReader readJSON()
         {
             string path = Application.streamingAssetsPath + "/fileJSON.json";
             JsonReader screen = JsonConvert.DeserializeObject<JsonReader>(File.ReadAllText(path));
             return screen;
         }
-
-        IEnumerator Get(string url, JsonMessage message)
+       IEnumerator Post(string url, JsonMessage message, Action<UnityWebRequest> callback)
         {
             string output = JsonConvert.SerializeObject(message);
-            Debug.Log("Url " + url);
-            Debug.Log("JSON: " + output);
-            Debug.Log("FINE POST");
-
-            var request = new UnityWebRequest(url, "Get");
+        
+            var request = new UnityWebRequest(url, "POST");
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(output);
             request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
             yield return request.SendWebRequest();
-            Debug.Log("Status Code: " + request.responseCode);
+            callback(request);
         }
-
         void EndReached(UnityEngine.Video.VideoPlayer vp)
-        {
+        {       
             vp.playbackSpeed = vp.playbackSpeed / 10.0f;
         }
     }
