@@ -4,5 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class GetUrl 
 {
+
     public string url { get; set; }
+   
 }
