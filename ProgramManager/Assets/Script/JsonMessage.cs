@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-public class JsonMessage
+namespace Assets.Script
 {
+	public class JsonMessage
+	{
 		public JsonReader reader { get; set; }
-		public string idMacchina { get; set;  }
+		public string idMacchina { get; set; }
 		//Classe wrap dek JSON  e dell'ID Macchina
 		public JsonMessage(JsonReader reader, string idMacchina)
 		{
@@ -10,3 +12,4 @@ public class JsonMessage
 			this.idMacchina = idMacchina;
 		}
 	}
+}
