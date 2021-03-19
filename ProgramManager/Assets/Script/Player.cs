@@ -11,7 +11,6 @@ using System;
 
 namespace Assets.Script
 {
-    // 11/03/2021 23:43
     public class Player : MainManager<Player>
     {
         GameObject video;
@@ -24,24 +23,14 @@ namespace Assets.Script
         {
             JsonReader screen = readJSON();
             JsonMessage message = new JsonMessage(screen, idMacchina);
-            /* faccio la POST */
-            StartCoroutine(Post("http://localhost:3000/url", message, (UnityWebRequest req) =>
-            {
-                if ((req.result == UnityWebRequest.Result.ConnectionError) || (req.result == UnityWebRequest.Result.ProtocolError))
-                {
-                    Debug.Log($"{req.error}: {req.downloadHandler.text}");
-                }
-                else
-                {
-                    GetUrl getUrl = JsonUtility.FromJson<GetUrl>(req.downloadHandler.text);
-                    Debug.Log(getUrl.url);
-                }
-            })); //Inserire IP SERVER al posto di localhost
+
             // Collegherà un VideoPlayer alla fotocamera principale.
             video = GameObject.Find("Main Camera");
             // VideoPlayer prende automaticamente di mira il backplane della telecamera quando viene aggiunto
             // in un oggetto fotocamera, non è necessario modificare videoPlayer.targetCamera.
             var videoPlayer = video.AddComponent<VideoPlayer>();
+            /* faccio la POST ed Inserire IP SERVER al posto di localhost*/
+            #region Configurazioni VideoPLayer
             //  valore predefinito 
             // avviare automaticamente 
             videoPlayer.playOnAwake = false;
@@ -52,7 +41,7 @@ namespace Assets.Script
             videoPlayer.targetCameraAlpha = 0.5F;
             //L'URL supporta percorsi locali assoluti o relativi.
             // Qui, usando assoluto.
-            //videoPlayer.url = "C:/Users/Alessandro/Documents/GitHub/PRJECT/ProgramManager/Assets/Video/LA BELLEZZA DELLA NATURA.mp4";
+            //videoPlayer.url =
             // Salta i primi 100 fotogrammi.
             videoPlayer.frame = 100;
             // Riavvia dall'inizio al termine.   
@@ -60,8 +49,25 @@ namespace Assets.Script
             //  rallentiamo la riproduzione
             videoPlayer.loopPointReached += EndReached;
             // Avvia la riproduzione.
-            videoPlayer.Play();
+            #endregion
+            StartCoroutine(Post("http://localhost:3000/url", message, (UnityWebRequest req) =>
+            {
+                if ((req.result == UnityWebRequest.Result.ConnectionError) || (req.result == UnityWebRequest.Result.ProtocolError))
+                {
+                    Debug.Log($"{req.error}: {req.downloadHandler.text}");
+                }
+                else
+                {
+                    VideoJson videoFile = JsonConvert.DeserializeObject<VideoJson>(req.downloadHandler.text);
+                    Debug.Log(videoFile.url);
+                    videoPlayer.url = videoFile.url;
+                    videoPlayer.Play();
+                }
+            }));
+
+            
         }
+        public void ConfigurazioneVideoPlayer() { }
         JsonReader readJSON()
         {
             string path = Application.streamingAssetsPath + "/fileJSON.json";
