@@ -9,6 +9,7 @@ Si noti che uno dei vantaggi del pattern singleton è che è possibile accedere 
 Debug.Log(SingletonImplementation.Instance.Text);
 
 JSON in Unity :
+
 La serializzazione JSON utilizza una nozione di JSON "strutturato": si crea una classe o una struttura per descrivere le variabili che si desidera memorizzare nei dati JSON.
 Definisce una semplice classe C # contenente variabili e la contrassegna con l' Serializableattributo, in modo da funzionare con il serializzatore JSON. 
 Nota:
