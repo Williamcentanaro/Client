@@ -9,6 +9,24 @@ Si noti che uno dei vantaggi del pattern singleton è che è possibile accedere 
 Debug.Log(SingletonImplementation.Instance.Text);
 
 JSON in Unity :
+Pacchetto Newtonsoft Json Unity
+Questo è un pacchetto destinato a progetti di sviluppo Unity interni e come tale non è supportato. Utilizzare a proprio rischio.
+
+Questo è un pacchetto Unity per Newtonsoft Json e corrisponde a Newtonsoft.Json versione 12.0.2.
+
+La documentazione per questo pacchetto viene fornita come collegamenti alla documentazione di Json.NET.
+
+Json.NET è un popolare framework JSON per .NET
+Documentazione
+Pagina principale di Json.NET Documentazione di Json.NET Codice sorgente Json.NET
+
+Casi d'uso
+Serializzatore JSON flessibile per la conversione tra oggetti .NET e JSON
+LINQ to JSON per leggere e scrivere manualmente JSON
+Scrivi JSON rientrato e di facile lettura
+Converti JSON in e da XML
+Supporta .NET Standard 2.0, .NET 2, .NET 3.5, .NET 4, .NET 4.5, Silverlight, Windows Phone e Windows 8 Store
+Questo è un pacchetto destinato a progetti di sviluppo Unity interni e come tale non è supportato. Utilizzare a proprio rischio.
 
 La serializzazione JSON utilizza una nozione di JSON "strutturato": si crea una classe o una struttura per descrivere le variabili che si desidera memorizzare nei dati JSON.
 Definisce una semplice classe C # contenente variabili e la contrassegna con l' Serializableattributo, in modo da funzionare con il serializzatore JSON. 
