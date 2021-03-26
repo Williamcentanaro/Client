@@ -1,26 +1,88 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Net;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Video;
+using UnityEditor;
+using Models;
+using Proyecto26;
+using System.Collections.Generic;
 
 namespace Assets.Script
 {
+
+
     public class Player : MainManager<Player>
     {
+        private readonly string mybasePath = "http://shpcvm-b3c74.serverlet.com/api/videos/KJ1270002E192800067A?key=swevendo605c833467237";
         GameObject video;
-        string idMacchina = "192.168.207.161";
+        private List<string> videoList;
+        private int nVideo = 0;
+
         void Start()
         {
+            videoList = new List<string>();
             Players();
         }
+
+
         public void Players()
         {
+
+            RestClient.DefaultRequestHeaders["Authorization"] = "Bearer ...";
+
+
+            RestClient.GetArray<Videos>(mybasePath).Then(res => {
+                //Debug.Log(JsonHelper.ArrayToJsonString<Videos>(res, true));
+
+                foreach (Videos cv in res)
+                {
+                    if (cv.videos.Count > 0)
+                    {
+                        Debug.Log(cv.videos[0].video);
+                        videoList.Add(cv.videos[0].video);
+                    }
+                    else
+                    {
+                        videoList.Add("null");
+                    }
+                    nVideo++;
+                    if (nVideo >= 10)
+                        downloadVideo();
+                }
+            }).Catch(err => Debug.Log(err.Message));
+
+        }
+
+        public void downloadVideo()
+        {
+            Debug.Log("downloadVideo\n");
+            Debug.Log("nVideo = " + nVideo);
+
+            foreach(string cv in videoList)
+            {
+                if (cv != "null") {
+                    StartVideo(cv);
+                    //Debug.Log("downloadVideo -> cv -> " + cv);
+                    //WebClient client = new WebClient();
+                    //client.DownloadFile(cv, @"C:\pippo.mp4");
+                }
+            }
+
+
+            Debug.Log("FINE");
+
+
+
+            /*
             JsonReader screen = readJSON();
             JsonMessage message = new JsonMessage(screen, idMacchina);
-            StartCoroutine(Post("http://localhost:3000/url", message, (UnityWebRequest req) =>
+            //StartCoroutine(Get("http://localhost:3000/url", (UnityWebRequest req)
+            Debug.Log("MESSAGE : -> " + message);
+            StartCoroutine(Post("http://localhost:3000/url",message,  (UnityWebRequest req) =>
             {
                 if ((req.result == UnityWebRequest.Result.ConnectionError) || (req.result == UnityWebRequest.Result.ProtocolError))
                 {
@@ -33,24 +95,10 @@ namespace Assets.Script
                     StartVideo(videoFile.url);
                 }
             }));
+            */
         }
-        JsonReader readJSON()
-        {
-            string path = Application.streamingAssetsPath + "/fileJSON.json";
-            JsonReader screen = JsonConvert.DeserializeObject<JsonReader>(File.ReadAllText(path));
-            return screen;
-        }
-        IEnumerator Post(string url, JsonMessage message, Action<UnityWebRequest> callback)
-        {
-            string output = JsonConvert.SerializeObject(message);
-            var request = new UnityWebRequest(url, "POST");
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(output);
-            request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-            yield return request.SendWebRequest();
-            callback(request);
-        }
+
+
         void StartVideo(string videoUrl)
         {
             // Collegherà un VideoPlayer alla fotocamera principale.
@@ -68,10 +116,8 @@ namespace Assets.Script
             videoPlayer.renderMode = UnityEngine.Video.VideoRenderMode.CameraNearPlane;
             // Questo renderà la nostra scena visibile attraverso il video riprodotto.
             videoPlayer.targetCameraAlpha = 0.5F;
-            // Salta i primi 100 fotogrammi.
-            videoPlayer.frame = 100;
             // Riavvia dall'inizio al termine.   
-            videoPlayer.isLooping = true;
+            videoPlayer.isLooping = false;
             //  rallentiamo la riproduzione
             videoPlayer.loopPointReached += EndReached;
             // Avvia la riproduzione.
